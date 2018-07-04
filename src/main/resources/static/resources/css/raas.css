@@ -21,6 +21,10 @@ h1 {
 	color: #000;
 }
 
+.modal-dialog .list-group-item a {
+	color: #495057;
+}
+
 /* below rom https://getbootstrap.com/docs/4.1/examples/cover/ */
 /*
  * Globals

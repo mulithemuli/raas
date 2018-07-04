@@ -21,7 +21,13 @@
 		</div>\
 	</div>\
 </div>'),
-			regexListItem: _.template('<a href="#" class="list-group-item list-group-item-action"><%- regex %></a>')
+			regexListItem: _.template('\
+<div class="list-group-item list-group-item-action">\
+	<div class="row">\
+		<a href="#" class=" col-sm-10"><%- regex %></a>\
+		<div class="col-sm-2"><button type="button" class="btn btn-outline-danger btn-sm float-right" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash-alt"></i></button></div>\
+	</div>\
+</div>')
 	};
 	
 	// functions
@@ -118,6 +124,15 @@
 		regexp.val($(e.currentTarget).text());
 		regexDialog.modal('hide');
 	});
+	
+	regexList.on('click', 'button', (e) => {
+		e.preventDefault();
+		let regexToDelete = $(e.currentTarget).parent().siblings('a').text();
+		let stored = storedRegex();
+		delete stored[regexToDelete];
+		localStorage.setItem('stored_regex', JSON.stringify(stored));
+		updateRegexList();
+	})
 	
 	$(document.getElementById('add_row')).on('click', (e) => {
 		e.preventDefault();
