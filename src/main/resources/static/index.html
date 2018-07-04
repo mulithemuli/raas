@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	    <meta name="description" content="">
+	    <meta name="author" content="">
+		<meta name="msapplication-TileColor" content="#da532c">
+		<meta name="theme-color" content="#ffffff">
+		<title>Rexeg as a service</title>
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+		<link rel="manifest" href="/site.webmanifest">
+		<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+		<link rel="stylesheet" href="resources/bootstrap/css/bootstrap.css">
+		<link rel="stylesheet" href="resources/fontawesome/css/solid.css">
+		<link rel="stylesheet" href="resources/fontawesome/css/fontawesome.css">
+		<link rel="stylesheet" href="resources/css/raas.css">
+	</head>
+	<body class="text-center">
+		<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+			<header class="masthead mb-auto"></header>
+			<main role="main" class="inner cover">
+				<h1 class="cover-heading mb-5">Regex As A Service</h1>
+				<form>
+					<div class="row">
+						<div class="input-group col-md-12 mb-5">
+							<div class="input-group-prepend">
+								<label class="input-group-text" for="regexp">RegEx</label>
+							</div>
+							<input type="text" class="form-control" id="regexp">
+							<div class="input-group-append">
+								<button type="button" class="btn btn-secondary" id="create_new" data-toggle="tooltip" data-placement="top" title="Generate"><i class="fas fa-dice"></i><span class="sr-only">Generate</span></button>
+								<button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<span class="sr-only">Toggle Dropdown</span>
+								</button>
+								<div class="dropdown-menu">
+									<a class="dropdown-item" href="#" id="save_local"><i class="fas fa-save"></i> Save local</a>
+									<a class="dropdown-item" href="#" id="open_local"><i class="fas fa-folder-open"></i> Open local</a>
+									<a class="dropdown-item" href="#" id="use_default"><i class="fas fa-undo-alt"></i> Use default</a>
+								</div>
+							</div>
+							<div class="invalid-feedback">
+								<a href="#" id="reset_regex">The Regular Expression is invalid <i class="fas fa-step-backward"></i></a>
+							</div>
+						</div>
+					</div>
+				</form>
+				<div id="texts"></div>
+				<div class="container">
+					<div class="row">
+						<div class="col">
+							<button type="button" class="btn btn-secondary float-sm-right" id="remove_row" data-toggle="tooltip" data-placement="top" title="Remove row"><i class="fas fa-minus"></i></i><span class="sr-only">Remove row</span></button>
+						</div>
+						<div class="col">
+							<button type="button" class="btn btn-secondary float-sm-left" id="add_row" data-toggle="tooltip" data-placement="top" title="Add row"><i class="fas fa-plus"></i></i><span class="sr-only">Add row</span></button>
+						</div>
+					</div>
+				</div>
+			</main>
+			<footer class="mastfoot mt-auto"></footer>
+		</div>
+		<script src="resources/jquery/jquery-3.3.1.min.js" integrity="sha256-0wthFPuUlq5GsqjN9ZN5yP/blXU0vR3XPmJsfGHH5n0=" crossorigin="anonymous"></script>
+		<script src="resources/popper/popper.min.js" integrity="sha256-MVrFR5AH0uhkpLUfUF/QeF67vpMaa1EUZ/pJUEoILFg=" crossorigin="anonymous"></script>
+		<script src="resources/bootstrap/js/bootstrap.min.js" integrity="sha256-xaF9RpdtRxzwYMWg4ldJoyPWqyDPCRD0Cv7YEEe6Ie8=" crossorigin="anonymous"></script>
+		<script src="resources/randexp/randexp.min.js" integrity="sha256-ysQqxWdzqdlQGEXfjnZWXRa0WbY1parO+SxdsW/uS58=" crossorigin="anonymous"></script>
+		<script src="resources/underscore/underscore.min.js" integrity="sha256-ldPneVWc/ZsUpCj8aPpyM4yZLsFeELmrPz6lLjnuLVQ=" crossorigin="anonymous"></script>
+		<script src="resources/js/raas.js"></script>
+	</body>
+</html>
