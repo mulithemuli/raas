@@ -17,6 +17,10 @@ h1 {
 	color: #dc3545;
 }
 
+.modal-dialog h5 {
+	color: #000;
+}
+
 /* below rom https://getbootstrap.com/docs/4.1/examples/cover/ */
 /*
  * Globals

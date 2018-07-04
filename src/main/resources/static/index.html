@@ -37,7 +37,7 @@
 								</button>
 								<div class="dropdown-menu">
 									<a class="dropdown-item" href="#" id="save_local"><i class="fas fa-save"></i> Save local</a>
-									<a class="dropdown-item" href="#" id="open_local"><i class="fas fa-folder-open"></i> Open local</a>
+									<a class="dropdown-item" href="#" id="open_local" data-toggle="modal" data-target="#regex_dialog"><i class="fas fa-folder-open"></i> Open local</a>
 									<a class="dropdown-item" href="#" id="use_default"><i class="fas fa-undo-alt"></i> Use default</a>
 								</div>
 							</div>
@@ -60,6 +60,25 @@
 				</div>
 			</main>
 			<footer class="mastfoot mt-auto"></footer>
+		</div>
+		<div class="modal fade" id="regex_dialog" tabindex="-1" role="dialog" aria-labelledby="regex_dialog_title" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="regex_dialog_title">Stored Regular Expressions</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="list-group" id="regex_list">
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
 		</div>
 		<script src="resources/jquery/jquery-3.3.1.min.js" integrity="sha256-0wthFPuUlq5GsqjN9ZN5yP/blXU0vR3XPmJsfGHH5n0=" crossorigin="anonymous"></script>
 		<script src="resources/popper/popper.min.js" integrity="sha256-MVrFR5AH0uhkpLUfUF/QeF67vpMaa1EUZ/pJUEoILFg=" crossorigin="anonymous"></script>

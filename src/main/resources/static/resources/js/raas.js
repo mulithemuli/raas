@@ -7,6 +7,8 @@
 	// fields / elements
 	let regexp = $(document.getElementById('regexp'));
 	let texts = $(document.getElementById('texts'));
+	let regexList = $(document.getElementById('regex_list'));
+	let regexDialog = $(document.getElementById('regex_dialog'));
 	
 	// templates
 	let templates = {
@@ -18,7 +20,8 @@
 			<button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Copy"><i class="fas fa-clipboard"></i><span class="sr-only">Copy</span></button>\
 		</div>\
 	</div>\
-</div>')
+</div>'),
+			regexListItem: _.template('<a href="#" class="list-group-item list-group-item-action"><%- regex %></a>')
 	};
 	
 	// functions
@@ -63,6 +66,14 @@
 		}
 	}
 	
+	let updateRegexList = () => {
+		regexList.children().remove();
+		let stored = storedRegex();
+		$.each(stored, (k) => {
+			regexList.append(templates.regexListItem({regex: k}));
+		});
+	}
+	
 	// events
 	$(document.getElementById('create_new')).on('click', generateTexts);
 	
@@ -99,15 +110,13 @@
 		}
 		stored[currentValue] = (stored[currentValue] || 0) + 1;
 		localStorage.setItem('stored_regex', JSON.stringify(stored));
+		updateRegexList();
 	});
 	
-	$(document.getElementById('open_local')).on('click', (e) => {
+	regexList.on('click', 'a', (e) => {
 		e.preventDefault();
-		let stored = storedRegex();
-		$.each(stored, (k, v) => {
-			console.log(k, v);
-			
-		});
+		regexp.val($(e.currentTarget).text());
+		regexDialog.modal('hide');
 	});
 	
 	$(document.getElementById('add_row')).on('click', (e) => {
@@ -131,6 +140,7 @@
 	updateRegex(lastRegex());
 	initTexts();
 	generateTexts();
+	updateRegexList();
 	
 	$('[data-toggle="tooltip"]').tooltip();
 	$('form').on('submit', (e) => {
