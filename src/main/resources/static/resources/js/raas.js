@@ -1,7 +1,8 @@
 (function($) {
 	let defaults = {
 			regex: '([a-zA-Z0-9_@:!]){4}([a-zA-Z]){2}([0-9]){2}',
-			numTexts: 5
+			numTexts: 5,
+			shareData: false
 	}
 	
 	// fields / elements
@@ -9,6 +10,7 @@
 	let texts = $(document.getElementById('texts'));
 	let regexList = $(document.getElementById('regex_list'));
 	let regexDialog = $(document.getElementById('regex_dialog'));
+	let shareRegexCheck = $(document.getElementById('share_regex'));
 	
 	// templates
 	let templates = {
@@ -30,25 +32,60 @@
 </div>')
 	};
 	
+	let settings = {
+			get lastRegex() {
+				return localStorage.getItem('last_regex') || defaults.regex;
+			},
+			set lastRegex(lastRegex) {
+				localStorage.setItem('last_regex', lastRegex);
+			},
+			get numTexts() {
+				return parseInt(localStorage.getItem('num_texts') || defaults.numTexts, 10);
+			},
+			set numTexts(numTexts) {
+				localStorage.setItem('num_texts', numTexts);
+			},
+			get storedRegex() {
+				return JSON.parse(localStorage.getItem('stored_regex') || '{}');
+			},
+			set storedRegex(storedRegex) {
+				localStorage.setItem('stored_regex', JSON.stringify(storedRegex));
+			},
+			get shareRegex() {
+				return localStorage.getItem('share_regex') || defaults.shareData;
+			},
+			set shareRegex(shareRegex) {
+				localStorage.setItem('share_regex', shareRegex);
+			}
+	}
+	
+	let saveSettings = () => {
+		localStorage.setItem('settings', JSON.stringify(settings));
+	}
+	
 	// functions
 	let updateRegex = (ex) => {
 		regexp.val(ex);
 	}
 	
-	let lastRegex = () => {
-		return localStorage.getItem('last_regex') || defaults.regex;
-	}
-	
-	let numTexts = () => {
-		return parseInt(localStorage.getItem('num_texts') || defaults.numTexts, 10);
-	}
-	
-	let storedRegex = () => {
-		return JSON.parse(localStorage.getItem('stored_regex') || '{}');
-	}
+//	let lastRegex = () => {
+//		return localStorage.getItem('last_regex') || defaults.regex;
+//	}
+//	
+//	let numTexts = () => {
+//		return parseInt(localStorage.getItem('num_texts') || defaults.numTexts, 10);
+//	}
+//	
+//	let storedRegex = () => {
+//		return JSON.parse(localStorage.getItem('stored_regex') || '{}');
+//	}
+//	
+//	let shareRegex = () {
+//		return localStorage.getItem('share_regex') || defaults.shareData;
+//	}
 	
 	let initTexts = () => {
-		let count = numTexts();
+		let count = settings.numTexts;
 		for (let i = 0; i < count; i++) {
 			texts.append(templates.texts());
 		}
@@ -59,14 +96,14 @@
 			e.preventDefault();
 		}
 		regexp.removeClass('is-invalid');
-		let regex = regexp.val() || lastRegex();
+		let regex = regexp.val() || settings.lastRegex;
 		try {
 			let randExp = new RandExp(regex);
 			texts.children().each((i, el) => {
 				$('input', el).val(randExp.gen());
 			});
 			updateRegex(regex);
-			localStorage.setItem('last_regex', regex);
+			settings.lastRegex = regex;
 		} catch (e) {
 			regexp.addClass('is-invalid');
 		}
@@ -74,7 +111,7 @@
 	
 	let updateRegexList = () => {
 		regexList.children().remove();
-		let stored = storedRegex();
+		let stored = settings.storedRegex;
 		$.each(stored, (k) => {
 			regexList.append(templates.regexListItem({regex: k}));
 		});
@@ -91,7 +128,7 @@
 	$(document.getElementById('reset_regex')).on('click', (e) => {
 		e.preventDefault();
 		regexp.removeClass('is-invalid');
-		updateRegex(lastRegex);
+		updateRegex(settings.lastRegex);
 	});
 	
 	$(texts).on('click', 'button', (e) => {
@@ -109,13 +146,13 @@
 	
 	$(document.getElementById('save_local')).on('click', (e) => {
 		e.preventDefault();
-		let stored = storedRegex();
+		let stored = settings.storedRegex;
 		let currentValue = regexp.val();
 		if (!currentValue) {
 			return;
 		}
 		stored[currentValue] = (stored[currentValue] || 0) + 1;
-		localStorage.setItem('stored_regex', JSON.stringify(stored));
+		settings.storedRegex = stored;
 		updateRegexList();
 	});
 	
@@ -128,9 +165,9 @@
 	regexList.on('click', 'button', (e) => {
 		e.preventDefault();
 		let regexToDelete = $(e.currentTarget).parent().siblings('a').text();
-		let stored = storedRegex();
+		let stored = settings.storedRegex;
 		delete stored[regexToDelete];
-		localStorage.setItem('stored_regex', JSON.stringify(stored));
+		settings.storedRegex = stored;
 		updateRegexList();
 	})
 	
@@ -138,26 +175,31 @@
 		e.preventDefault();
 		let row = $(templates.texts());
 		texts.append(row);
-		$('input', row).val(new RandExp(lastRegex()).gen());
-		localStorage.setItem('num_texts', numTexts() + 1);
+		$('input', row).val(new RandExp(settings.lastRegex).gen());
+		settings.numTexts = settings.numTexts + 1;
 	});
 	
 	$(document.getElementById('remove_row')).on('click', (e) => {
 		e.preventDefault();
-		if (numTexts() <= 1) {
+		if (settings.numTexts <= 1) {
 			return;
 		}
 		texts.children().last().remove();
-		localStorage.setItem('num_texts', numTexts() - 1);
+		settings.numTexts = settings.numTexts - 1;
+	});
+	
+	shareRegexCheck.on('change', (e) => {
+		settings.shareRegex = shareRegexCheck.prop('checked');
 	});
 	
 	// initializing
-	updateRegex(lastRegex());
+	updateRegex(settings.lastRegex);
 	initTexts();
 	generateTexts();
 	updateRegexList();
 	
 	$('[data-toggle="tooltip"]').tooltip();
+	$('[data-toggle="popover"]').popover();
 	$('form').on('submit', (e) => {
 		e.preventDefault();
 		generateTexts();
