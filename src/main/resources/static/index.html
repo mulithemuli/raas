@@ -55,12 +55,14 @@
 			<footer class="footer w-100">
 				<div class="container">
 					<div class="row">
-						<div class="col">
+						<div class="col-md-2">
 							<button type="button" class="btn btn-secondary float-left" id="remove_row" data-toggle="tooltip" data-placement="top" title="Remove row"><i class="fas fa-minus"></i><span class="sr-only">Remove row</span></button>
 							<button type="button" class="btn btn-secondary float-left" id="add_row" data-toggle="tooltip" data-placement="top" title="Add row"><i class="fas fa-plus"></i><span class="sr-only">Add row</span></button>
 						</div>
-						<div class="col"></div>
 						<div class="col">
+							<dl><dt class="float-left mr-1">Last used Regex</dt><dd class="float-left" id="last_used_regex"></dd></dl>
+						</div>
+						<div class="col-md-3">
 							<div class="custom-control custom-checkbox float-right">
 								<input type="checkbox" class="custom-control-input" id="share_regex">
 								<label class="custom-control-label" for="share_regex">Share Regex</label>
@@ -95,6 +97,8 @@
 		<script src="resources/bootstrap/js/bootstrap.min.js" integrity="sha256-xaF9RpdtRxzwYMWg4ldJoyPWqyDPCRD0Cv7YEEe6Ie8=" crossorigin="anonymous"></script>
 		<script src="resources/randexp/randexp.min.js" integrity="sha256-ysQqxWdzqdlQGEXfjnZWXRa0WbY1parO+SxdsW/uS58=" crossorigin="anonymous"></script>
 		<script src="resources/underscore/underscore.min.js" integrity="sha256-ldPneVWc/ZsUpCj8aPpyM4yZLsFeELmrPz6lLjnuLVQ=" crossorigin="anonymous"></script>
+		<script src="/webjars/sockjs-client/sockjs.min.js"></script>
+		<script src="/webjars/stomp-websocket/stomp.min.js"></script>
 		<script src="resources/js/raas.js"></script>
 	</body>
 </html>

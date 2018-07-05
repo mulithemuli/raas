@@ -2,7 +2,7 @@
 	let defaults = {
 			regex: '([a-zA-Z0-9_@:!]){4}([a-zA-Z]){2}([0-9]){2}',
 			numTexts: 5,
-			shareData: false
+			shareData: 'false'
 	}
 	
 	// fields / elements
@@ -11,6 +11,9 @@
 	let regexList = $(document.getElementById('regex_list'));
 	let regexDialog = $(document.getElementById('regex_dialog'));
 	let shareRegexCheck = $(document.getElementById('share_regex'));
+	let lastUsedRegex = $(document.getElementById('last_used_regex'));
+	
+	let stompClient;
 	
 	// templates
 	let templates = {
@@ -29,7 +32,8 @@
 		<a href="#" class=" col-sm-10"><%- regex %></a>\
 		<div class="col-sm-2"><button type="button" class="btn btn-outline-danger btn-sm float-right" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash-alt"></i></button></div>\
 	</div>\
-</div>')
+</div>'),
+			lastUsedRegex: _.template('<a href="#" data-regex="<%- regex %>" data-toggle="tooltip" data-placement="top" title="Use this Regex"><%- regex %> <span class="badge badge-secondary"><%- used %></span></a>')
 	};
 	
 	let settings = {
@@ -52,7 +56,7 @@
 				localStorage.setItem('stored_regex', JSON.stringify(storedRegex));
 			},
 			get shareRegex() {
-				return localStorage.getItem('share_regex') || defaults.shareData;
+				return (localStorage.getItem('share_regex') || defaults.shareData) === 'true';
 			},
 			set shareRegex(shareRegex) {
 				localStorage.setItem('share_regex', shareRegex);
@@ -84,7 +88,7 @@
 			});
 			updateRegex(regex);
 			settings.lastRegex = regex;
-			if (settings.shareRegex === 'true') {
+			if (settings.shareRegex) {
 				$.post('/lastUsedRegex', { regex: regex });
 			}
 		} catch (e) {
@@ -98,6 +102,14 @@
 		$.each(stored, (k) => {
 			regexList.append(templates.regexListItem({regex: k}));
 		});
+	}
+	
+	let updateLastUsedRegex = (regexStats) => {
+		if (regexStats) {
+			lastUsedRegex.html(templates.lastUsedRegex(regexStats));
+		} else {
+			lastUsedRegex.html(' <em>none</em>');
+		}
 	}
 	
 	// events
@@ -175,12 +187,28 @@
 		settings.shareRegex = shareRegexCheck.prop('checked');
 	});
 	
+	lastUsedRegex.on('click', 'a', (e) => {
+		updateRegex($(e.currentTarget).data('regex'));
+	});
+	
 	// initializing
+	(function() {
+		let socket = new SockJS('/raasWs');
+		stompClient = Stomp.over(socket);
+		stompClient.connect({}, () => {
+			stompClient.subscribe('/topic/lastUsedRegex', (data) => {
+				updateLastUsedRegex(JSON.parse(data.body));
+			});
+		});
+	}());
+	
 	updateRegex(settings.lastRegex);
 	initTexts();
 	generateTexts();
 	updateRegexList();
 	shareRegexCheck.prop('checked', settings.shareRegex);
+	
+	$.get('lastUsedRegex', updateLastUsedRegex);
 	
 	$('[data-toggle="tooltip"]').tooltip();
 	$('[data-toggle="popover"]').popover();
@@ -188,4 +216,5 @@
 		e.preventDefault();
 		generateTexts();
 	});
+	
 }(jQuery));
