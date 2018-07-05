@@ -59,30 +59,10 @@
 			}
 	}
 	
-	let saveSettings = () => {
-		localStorage.setItem('settings', JSON.stringify(settings));
-	}
-	
 	// functions
 	let updateRegex = (ex) => {
 		regexp.val(ex);
 	}
-	
-//	let lastRegex = () => {
-//		return localStorage.getItem('last_regex') || defaults.regex;
-//	}
-//	
-//	let numTexts = () => {
-//		return parseInt(localStorage.getItem('num_texts') || defaults.numTexts, 10);
-//	}
-//	
-//	let storedRegex = () => {
-//		return JSON.parse(localStorage.getItem('stored_regex') || '{}');
-//	}
-//	
-//	let shareRegex = () {
-//		return localStorage.getItem('share_regex') || defaults.shareData;
-//	}
 	
 	let initTexts = () => {
 		let count = settings.numTexts;
