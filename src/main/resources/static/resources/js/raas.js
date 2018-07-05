@@ -84,6 +84,9 @@
 			});
 			updateRegex(regex);
 			settings.lastRegex = regex;
+			if (settings.shareRegex === 'true') {
+				$.post('/lastUsedRegex', { regex: regex });
+			}
 		} catch (e) {
 			regexp.addClass('is-invalid');
 		}
@@ -177,6 +180,7 @@
 	initTexts();
 	generateTexts();
 	updateRegexList();
+	shareRegexCheck.prop('checked', settings.shareRegex);
 	
 	$('[data-toggle="tooltip"]').tooltip();
 	$('[data-toggle="popover"]').popover();
