@@ -56,10 +56,16 @@
 				<div class="container">
 					<div class="row">
 						<div class="col">
-							<button type="button" class="btn btn-secondary float-sm-right" id="remove_row" data-toggle="tooltip" data-placement="top" title="Remove row"><i class="fas fa-minus"></i></i><span class="sr-only">Remove row</span></button>
+							<button type="button" class="btn btn-secondary float-left" id="remove_row" data-toggle="tooltip" data-placement="top" title="Remove row"><i class="fas fa-minus"></i><span class="sr-only">Remove row</span></button>
+							<button type="button" class="btn btn-secondary float-left" id="add_row" data-toggle="tooltip" data-placement="top" title="Add row"><i class="fas fa-plus"></i><span class="sr-only">Add row</span></button>
 						</div>
+						<div class="col"></div>
 						<div class="col">
-							<button type="button" class="btn btn-secondary float-sm-left" id="add_row" data-toggle="tooltip" data-placement="top" title="Add row"><i class="fas fa-plus"></i></i><span class="sr-only">Add row</span></button>
+							<div class="custom-control custom-checkbox float-right">
+								<input type="checkbox" class="custom-control-input" id="share_regex">
+								<label class="custom-control-label" for="share_regex">Share Regex</label>
+								<a href="#" data-toggle="popover" data-trigger="focus" data-placement="top" data-content="Regexes used can be seen by others such as for &quot;recently used&quot; or &quot;most used&quot;. Texts are still generated locally and can't be seen by others."><i class="fas fa-info-circle"></i></a>
+							</div>
 						</div>
 					</div>
 				</div>
