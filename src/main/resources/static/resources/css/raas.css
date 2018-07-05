@@ -1,4 +1,27 @@
 @charset "UTF-8";
+body {
+	overflow: hidden;
+}
+
+.scroll-container {
+	overflow: auto;
+	z-index: 1;
+}
+
+.footer {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	background-color: #444;
+	box-shadow: 0 0 5rem rgba(0, 0, 0, .5);
+	padding: 2rem;
+	z-index: 2;
+}
+
+.footer .container {
+	max-width: 42em;
+}
+
 h1 {
 	font-variant: small-caps;
 }
@@ -23,6 +46,10 @@ h1 {
 
 .modal-dialog .list-group-item a {
 	color: #495057;
+}
+
+.texts {
+	margin-bottom: 7rem;
 }
 
 /* below rom https://getbootstrap.com/docs/4.1/examples/cover/ */

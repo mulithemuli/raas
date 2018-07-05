@@ -19,35 +19,40 @@
 		<link rel="stylesheet" href="resources/css/raas.css">
 	</head>
 	<body class="text-center">
-		<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-			<header class="masthead mb-auto"></header>
-			<main role="main" class="inner cover">
-				<h1 class="cover-heading mb-5">RegEx As A Service</h1>
-				<form>
-					<div class="row">
-						<div class="input-group col-md-12 mb-5">
-							<div class="input-group-prepend">
-								<label class="input-group-text" for="regexp">RegEx</label>
-							</div>
-							<input type="text" class="form-control" id="regexp">
-							<div class="input-group-append">
-								<button type="button" class="btn btn-secondary" id="create_new" data-toggle="tooltip" data-placement="top" title="Generate"><i class="fas fa-dice"></i><span class="sr-only">Generate</span></button>
-								<button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									<span class="sr-only">Toggle Dropdown</span>
-								</button>
-								<div class="dropdown-menu">
-									<a class="dropdown-item" href="#" id="save_local"><i class="fas fa-save"></i> Save local</a>
-									<a class="dropdown-item" href="#" id="open_local" data-toggle="modal" data-target="#regex_dialog"><i class="fas fa-folder-open"></i> Open local</a>
-									<a class="dropdown-item" href="#" id="use_default"><i class="fas fa-undo-alt"></i> Use default</a>
+		<div class="scroll-container w-100 h-100">
+			<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+				<header class="masthead mb-auto"></header>
+				<main role="main" class="inner cover">
+					<h1 class="cover-heading mb-5">RegEx As A Service</h1>
+					<form>
+						<div class="row">
+							<div class="input-group col-md-12 mb-5">
+								<div class="input-group-prepend">
+									<label class="input-group-text" for="regexp">RegEx</label>
+								</div>
+								<input type="text" class="form-control" id="regexp">
+								<div class="input-group-append">
+									<button type="button" class="btn btn-secondary" id="create_new" data-toggle="tooltip" data-placement="top" title="Generate"><i class="fas fa-dice"></i><span class="sr-only">Generate</span></button>
+									<button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<span class="sr-only">Toggle Dropdown</span>
+									</button>
+									<div class="dropdown-menu">
+										<a class="dropdown-item" href="#" id="save_local"><i class="fas fa-save"></i> Save local</a>
+										<a class="dropdown-item" href="#" id="open_local" data-toggle="modal" data-target="#regex_dialog"><i class="fas fa-folder-open"></i> Open local</a>
+										<a class="dropdown-item" href="#" id="use_default"><i class="fas fa-undo-alt"></i> Use default</a>
+									</div>
+								</div>
+								<div class="invalid-feedback">
+									<a href="#" id="reset_regex">The Regular Expression is invalid <i class="fas fa-step-backward"></i></a>
 								</div>
 							</div>
-							<div class="invalid-feedback">
-								<a href="#" id="reset_regex">The Regular Expression is invalid <i class="fas fa-step-backward"></i></a>
-							</div>
 						</div>
-					</div>
-				</form>
-				<div id="texts"></div>
+					</form>
+					<div id="texts" class="texts"></div>
+				</main>
+				<div class="mastfoot mt-auto"></div>
+			</div>
+			<footer class="footer w-100">
 				<div class="container">
 					<div class="row">
 						<div class="col">
@@ -58,8 +63,7 @@
 						</div>
 					</div>
 				</div>
-			</main>
-			<footer class="mastfoot mt-auto"></footer>
+			</footer>
 		</div>
 		<div class="modal fade" id="regex_dialog" tabindex="-1" role="dialog" aria-labelledby="regex_dialog_title" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered" role="document">
