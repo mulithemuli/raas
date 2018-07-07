@@ -170,6 +170,7 @@
 		e.preventDefault();
 		let row = $(templates.texts());
 		texts.append(row);
+		$('[data-toggle="tooltip"]', row).tooltip();
 		$('input', row).val(new RandExp(settings.lastRegex).gen());
 		settings.numTexts = settings.numTexts + 1;
 	});
