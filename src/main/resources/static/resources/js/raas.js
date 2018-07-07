@@ -211,6 +211,7 @@
 	(function() {
 		let socket = new SockJS('/raasWs');
 		stompClient = Stomp.over(socket);
+		stompClient.debug = null;
 		stompClient.connect({}, () => {
 			stompClient.subscribe('/topic/lastUsedRegex', (data) => {
 				updateLastUsedRegex(JSON.parse(data.body));
