@@ -60,7 +60,7 @@
 							<button type="button" class="btn btn-secondary float-left" id="add_row" data-toggle="tooltip" data-placement="top" title="Add row"><i class="fas fa-plus"></i><span class="sr-only">Add row</span></button>
 						</div>
 						<div class="col">
-							<dl id="last_used_regex"><dt class="float-left mr-1" data-toggle="tooltip" data-placement="top">Last used Regex <span class="badge badge-secondary"></span></dt><dd class="float-left"></dd></dl>
+							<dl id="last_used_regex"><dt class="float-left mr-1" data-toggle="tooltip" data-placement="top"><a href="#" data-toggle="modal" data-target="#regex_stats_dialog">Last used Regex <span class="badge badge-secondary"></span></a></dt><dd class="float-left"></dd></dl>
 						</div>
 						<div class="col-md-3">
 							<div class="custom-control custom-checkbox float-right">
@@ -85,6 +85,25 @@
 					</div>
 					<div class="modal-body">
 						<div class="list-group list-group-flush" id="regex_list">
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="regex_stats_dialog" tabindex="-1" role="dialog" aria-labelledby="regex_stats_dialog_title" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="regex_stats_dialog_title">Regular Expressions statistics</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="list-group list-group-flush" id="regex_stat_list">
 						</div>
 					</div>
 					<div class="modal-footer">

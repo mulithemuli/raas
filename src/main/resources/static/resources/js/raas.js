@@ -13,6 +13,8 @@
 	let shareRegexCheck = $(document.getElementById('share_regex'));
 	let lastUsedRegexDt = $('dt', document.getElementById('last_used_regex'));
 	let lastUsedRegexDd = $('dd', document.getElementById('last_used_regex'));
+	let regexStatsList = $(document.getElementById('regex_stat_list'));
+	let regexStatsDialog = $(document.getElementById('regex_stats_dialog'));
 	
 	let stompClient;
 	
@@ -30,11 +32,12 @@
 			regexListItem: _.template('\
 <div class="list-group-item list-group-item-action">\
 	<div class="row">\
-		<a href="#" class=" col-sm-10"><%- regex %></a>\
+		<a href="#" class="col-sm-10"><%- regex %></a>\
 		<div class="col-sm-2"><button type="button" class="btn btn-outline-danger btn-sm float-right" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash-alt"></i></button></div>\
 	</div>\
 </div>'),
-			lastUsedRegex: _.template('<a href="#" data-regex="<%- regex %>" data-toggle="tooltip" data-placement="top" title="Use this Regex"><%- regex %></a>')
+			lastUsedRegex: _.template('<a href="#" data-regex="<%- regex %>" data-toggle="tooltip" data-placement="top" title="Use this Regex"><%- regex %></a>'),
+			regexStatsItem: _.template('<a href="#" class="list-group-item list-group-item-action" data-toggle="tooltip" data-placement="top" data-regex="<%- regex %>"><%- regex %> <span class="badge badge-secondary"><%- used %></span></a>'),
 	};
 	
 	let settings = {
@@ -196,6 +199,42 @@
 	
 	lastUsedRegexDd.on('click', 'a', (e) => {
 		updateRegex($(e.currentTarget).data('regex'));
+	});
+	
+	let dialogFromNowTimer;
+	
+	regexStatsDialog.on('show.bs.modal', () => {
+		let statItems = [];
+		$.get('mostUsedRegex', (data) => {
+			regexStatsList.children().remove();
+			$.each(data, (i, el) => {
+				let statItem = $(templates.regexStatsItem(el));
+				statItems.push(statItem);
+				regexStatsList.append(statItem);
+				statItem.attr({
+					'data-original-title': moment(el.lastUsed).fromNow(),
+					'data-last-used': el.lastUsed
+				}).tooltip();
+			});
+		});
+		
+		dialogFromNowTimer = setInterval(() => {
+			$.each(statItems, (i, el) => {
+				el.attr('data-original-title', moment(el.attr('data-last-used')).fromNow());
+			});
+		}, 100);
+	});
+	
+	regexStatsDialog.on('hide.bs.modal', () => {
+		if (dialogFromNowTimer) {
+			clearInterval(dialogFromNowTimer);
+		}
+	});
+	
+	regexStatsList.on('click', 'a', (e) => {
+			e.preventDefault();
+			updateRegex($(e.currentTarget).data('regex'));
+			regexStatsDialog.modal('hide');
 	});
 	
 	// timers
