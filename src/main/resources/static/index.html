@@ -60,7 +60,7 @@
 							<button type="button" class="btn btn-secondary float-left" id="add_row" data-toggle="tooltip" data-placement="top" title="Add row"><i class="fas fa-plus"></i><span class="sr-only">Add row</span></button>
 						</div>
 						<div class="col">
-							<dl><dt class="float-left mr-1">Last used Regex</dt><dd class="float-left" id="last_used_regex"></dd></dl>
+							<dl id="last_used_regex"><dt class="float-left mr-1" data-toggle="tooltip" data-placement="top">Last used Regex <span class="badge badge-secondary"></span></dt><dd class="float-left"></dd></dl>
 						</div>
 						<div class="col-md-3">
 							<div class="custom-control custom-checkbox float-right">
@@ -71,6 +71,7 @@
 						</div>
 					</div>
 				</div>
+				<div class="footer-shadow"></div>
 			</footer>
 		</div>
 		<div class="modal fade" id="regex_dialog" tabindex="-1" role="dialog" aria-labelledby="regex_dialog_title" aria-hidden="true">
@@ -97,6 +98,7 @@
 		<script src="resources/bootstrap/js/bootstrap.min.js" integrity="sha256-xaF9RpdtRxzwYMWg4ldJoyPWqyDPCRD0Cv7YEEe6Ie8=" crossorigin="anonymous"></script>
 		<script src="resources/randexp/randexp.min.js" integrity="sha256-ysQqxWdzqdlQGEXfjnZWXRa0WbY1parO+SxdsW/uS58=" crossorigin="anonymous"></script>
 		<script src="resources/underscore/underscore.min.js" integrity="sha256-ldPneVWc/ZsUpCj8aPpyM4yZLsFeELmrPz6lLjnuLVQ=" crossorigin="anonymous"></script>
+		<script src="resources/moment/moment.min.js" integrity="sha256-CutOzxCRucUsn6C6TcEYsauvvYilEniTXldPa6/wu0k=" crossorigin="anonymous"></script>
 		<script src="/webjars/sockjs-client/sockjs.min.js"></script>
 		<script src="/webjars/stomp-websocket/stomp.min.js"></script>
 		<script src="resources/js/raas.js"></script>

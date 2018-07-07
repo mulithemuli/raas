@@ -11,7 +11,8 @@
 	let regexList = $(document.getElementById('regex_list'));
 	let regexDialog = $(document.getElementById('regex_dialog'));
 	let shareRegexCheck = $(document.getElementById('share_regex'));
-	let lastUsedRegex = $(document.getElementById('last_used_regex'));
+	let lastUsedRegexDt = $('dt', document.getElementById('last_used_regex'));
+	let lastUsedRegexDd = $('dd', document.getElementById('last_used_regex'));
 	
 	let stompClient;
 	
@@ -33,7 +34,7 @@
 		<div class="col-sm-2"><button type="button" class="btn btn-outline-danger btn-sm float-right" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fas fa-trash-alt"></i></button></div>\
 	</div>\
 </div>'),
-			lastUsedRegex: _.template('<a href="#" data-regex="<%- regex %>" data-toggle="tooltip" data-placement="top" title="Use this Regex"><%- regex %> <span class="badge badge-secondary"><%- used %></span></a>')
+			lastUsedRegex: _.template('<a href="#" data-regex="<%- regex %>" data-toggle="tooltip" data-placement="top" title="Use this Regex"><%- regex %></a>')
 	};
 	
 	let settings = {
@@ -106,9 +107,14 @@
 	
 	let updateLastUsedRegex = (regexStats) => {
 		if (regexStats) {
-			lastUsedRegex.html(templates.lastUsedRegex(regexStats));
+			lastUsedRegexDd.html(templates.lastUsedRegex(regexStats));
+			$('span', lastUsedRegexDt).text(regexStats.used);
+			$('a', lastUsedRegexDd).tooltip();
+			let ago = moment(regexStats.lastUsed).fromNow();
+			lastUsedRegexDt.attr({'data-original-title': ago, 'data-last-used': regexStats.lastUsed}).tooltip();
 		} else {
-			lastUsedRegex.html(' <em>none</em>');
+			lastUsedRegexDd.html(' <em>none</em>');
+			$('span', lastUsedRegexDt).text(0);
 		}
 	}
 	
@@ -188,9 +194,18 @@
 		settings.shareRegex = shareRegexCheck.prop('checked');
 	});
 	
-	lastUsedRegex.on('click', 'a', (e) => {
+	lastUsedRegexDd.on('click', 'a', (e) => {
 		updateRegex($(e.currentTarget).data('regex'));
 	});
+	
+	// timers
+	setInterval(() => {
+		if (!lastUsedRegexDt.attr('data-last-used')) {
+			return;
+		}
+		let ago = moment(lastUsedRegexDt.attr('data-last-used')).fromNow();
+		lastUsedRegexDt.attr('data-original-title', ago).tooltip();
+	}, 100);
 	
 	// initializing
 	(function() {

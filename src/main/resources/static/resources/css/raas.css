@@ -16,10 +16,21 @@ body {
 	box-shadow: 0 0 5rem rgba(0, 0, 0, .5);
 	padding: 2rem;
 	z-index: 2;
+	height: 7rem;
+	max-height: 7rem;
 }
 
 .footer .container {
 	max-width: 42em;
+}
+
+.footer .footer-shadow {
+	box-shadow: 0px 0px 2rem 1.25rem rgba(0,0,0,1);
+	position: absolute;
+	bottom: -1px;
+	left: -50%;
+	height: 1px;
+	width: 200%;
 }
 
 h1 {

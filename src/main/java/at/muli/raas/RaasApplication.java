@@ -1,7 +1,7 @@
 package at.muli.raas;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -74,17 +74,17 @@ public class RaasApplication {
 		
 		private Long used;
 		
-		private LocalDateTime lastUsed;
+		private ZonedDateTime lastUsed;
 		
 		public RegexStats(String regex) {
 			this.regex = regex;
 			this.used = 1L;
-			this.lastUsed = LocalDateTime.now();
+			this.lastUsed = ZonedDateTime.now();
 		}
 		
 		public RegexStats use() {
 			this.used += 1;
-			this.lastUsed = LocalDateTime.now();
+			this.lastUsed = ZonedDateTime.now();
 			return this;
 		}
 	}
