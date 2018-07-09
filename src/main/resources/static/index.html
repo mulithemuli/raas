@@ -64,10 +64,18 @@
 							<dl id="last_used_regex"><dt class="float-left mr-1" data-toggle="tooltip" data-placement="top"><a href="#" data-toggle="modal" data-target="#regex_stats_dialog">Last used Regex <span class="badge badge-secondary"></span></a></dt><dd class="float-left"></dd></dl>
 						</div>
 						<div class="col-md-3">
-							<div class="custom-control custom-checkbox float-right">
-								<input type="checkbox" class="custom-control-input" id="share_regex">
-								<label class="custom-control-label" for="share_regex">Share Regex</label>
-								<a href="#" data-toggle="popover" data-trigger="focus" data-placement="top" data-content="Regexes used can be seen by others such as for &quot;recently used&quot; or &quot;most used&quot;. Texts are still generated locally and can't be seen by others."><i class="fas fa-info-circle"></i></a>
+							<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+								<div class="btn-group-toggle" data-toggle="buttons">
+									<label class="btn btn-secondary">
+										<input type="checkbox" checked autocomplete="off" id="share_regex"> Share Regex
+										<a href="#" data-toggle="popover" data-trigger="focus" data-placement="top" data-content="Regexes used can be seen by others such as for &quot;recently used&quot; or &quot;most used&quot;. Texts are still generated locally and can't be seen by others."><i class="fas fa-info-circle"></i></a>
+									</label>
+								</div>
+								<div class="btn-group" role="group">
+									<button id="agent_group" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="sr-only">Available agents</span></button>
+									<div class="dropdown-menu" aria-labelledby="agent_group" id="agent_dropdown">
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -121,15 +129,7 @@
 		<script src="resources/moment/moment.min.js" integrity="sha256-CutOzxCRucUsn6C6TcEYsauvvYilEniTXldPa6/wu0k=" crossorigin="anonymous"></script>
 		<script src="/webjars/sockjs-client/sockjs.min.js"></script>
 		<script src="/webjars/stomp-websocket/stomp.min.js"></script>
-		<script src="resources/js/raas.js"></script>
 		<script src="https://unpkg.com/clippyjs@latest"></script>
-		<script type="text/javascript">
-			clippy.load('Links', function(agent){
-				// Do anything with the loaded agent
-				window.agent = agent;
-				window.agent.show();
-				window.agent.play('Wave');
-			});
-		</script>
+		<script src="resources/js/raas.js"></script>
 	</body>
 </html>

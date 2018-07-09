@@ -1,8 +1,22 @@
 (function($) {
+	let agents = {
+		'Merlin': { visible: false, agent: null},
+		'Links': { visible: false, agent: null},
+		'Genius': { visible: false, agent: null},
+		'Genie': { visible: false, agent: null},
+		'Rover': { visible: false, agent: null},
+		'Peedy': { visible: false, agent: null},
+		'Bonzi': { visible: false, agent: null},
+		'Clippy': { visible: false, agent: null},
+		'F1': { visible: false, agent: null},
+		'Rocky': { visible: false, agent: null}
+		};
+	
 	let defaults = {
 			regex: '([a-zA-Z0-9_@:!]){4}([a-zA-Z]){2}([0-9]){2}',
 			numTexts: 5,
-			shareData: 'false'
+			shareData: 'false',
+			agents: []
 	}
 	
 	// fields / elements
@@ -15,8 +29,10 @@
 	let lastUsedRegexDd = $('dd', document.getElementById('last_used_regex'));
 	let regexStatsList = $(document.getElementById('regex_stat_list'));
 	let regexStatsDialog = $(document.getElementById('regex_stats_dialog'));
+	let agentDropdown = $(document.getElementById('agent_dropdown'));
 	
 	let stompClient;
+	let usedAgent;
 	
 	// templates
 	let templates = {
@@ -38,6 +54,7 @@
 </div>'),
 			lastUsedRegex: _.template('<a href="#" data-regex="<%- regex %>" data-toggle="tooltip" data-placement="top" title="Use this Regex"><%- regex %></a>'),
 			regexStatsItem: _.template('<a href="#" class="list-group-item list-group-item-action" data-toggle="tooltip" data-placement="top" data-regex="<%- regex %>"><%- regex %> <span class="badge badge-secondary"><%- used %></span></a>'),
+			agent: _.template('<a class="dropdown-item" href="#"><%- name %></a>')
 	};
 	
 	let settings = {
@@ -64,6 +81,12 @@
 			},
 			set shareRegex(shareRegex) {
 				localStorage.setItem('share_regex', shareRegex);
+			},
+			get agents() {
+				return JSON.parse(localStorage.getItem('agent')) || defaults.agents;
+			},
+			set agents(agents) {
+				localStorage.setItem('agent', JSON.stringify(agents));
 			}
 	}
 	
@@ -79,6 +102,16 @@
 		}
 	}
 	
+	let playAgents = (animation) => {
+		$.each(agents, (k, v) => {
+			if (v.agent && animation) {
+				v.agent.play(animation);
+			} else if (v.agent) {
+				v.agent.stop();
+			}
+		});
+	}
+	
 	let generateTexts = (e) => {
 		if (e) {
 			e.preventDefault();
@@ -86,9 +119,9 @@
 		regexp.removeClass('is-invalid');
 		let regex = regexp.val() || settings.lastRegex;
 		try {
-			window.agent && window.agent.stop();
+			playAgents();
 			let randExp = new RandExp(regex);
-			window.agent && window.agent.play('Print');
+			playAgents('Print');
 
 			texts.children().each((i, el) => {
 				$('input', el).val(randExp.gen());
@@ -99,7 +132,7 @@
 				$.post('/lastUsedRegex', { regex: regex });
 			}
 		} catch (e) {
-			window.agent && window.agent.play('GetAttention');
+			playAgents('GetAttention');
 			regexp.addClass('is-invalid');
 		}
 	}
@@ -266,7 +299,8 @@
 	initTexts();
 	generateTexts();
 	updateRegexList();
-	shareRegexCheck.prop('checked', settings.shareRegex);
+	shareRegexCheck.prop('checked', settings.shareRegex).parent().toggleClass('active', settings.shareRegex);
+	shareRegexCheck.siblings('a').on('click', (e) => { e.stopPropagation() });
 	
 	$.get('lastUsedRegex', updateLastUsedRegex);
 	
@@ -275,6 +309,54 @@
 	$('form').on('submit', (e) => {
 		e.preventDefault();
 		generateTexts();
+	});
+	
+	let randPos = () => .2 + Math.random() * .6;
+	let toggleAgent = (name) => {
+		if (agents[name].visible) {
+			agents[name].agent.stop();
+			agents[name].visible = false;
+			agents[name].agent.hide(true);
+			return;
+		}
+		if (!agents[name].agent) {
+			clippy.load(name, (agent) => {
+				agents[name].agent = agent;
+				agents[name].agent.show();
+				agents[name].agent.moveTo($(document).width() / 2 * randPos(), $(document).height() * randPos());
+				agents[name].agent.play('Wave');
+			});
+		} else {
+			agents[name].agent.stop();
+			agents[name].agent.show();
+			agents[name].agent.play('Wave');
+		}
+		agents[name].visible = true;
+	}
+	
+	$.each(settings.agents, (i, name) => {
+		toggleAgent(name);
+	});
+	
+	
+	$.each(agents, (k, v) => {
+		let agentDom = $(templates.agent({name: k})).toggleClass('active', v.visible).on('click', (e) => {
+			e.preventDefault();
+			e.stopPropagation();
+			toggleAgent(k);
+			agentDom.toggleClass('active', v.visible);
+			let visibleAgents = settings.agents;
+			if (v.visible) {
+				visibleAgents.push(k);
+			} else {
+				let index = visibleAgents.indexOf(k);
+				if (index != -1) {
+					visibleAgents.splice(index, 1);
+				}
+			}
+			settings.agents = visibleAgents;
+		});
+		agentDropdown.append(agentDom);
 	});
 	
 }(jQuery));

@@ -33,6 +33,19 @@ body {
 	width: 200%;
 }
 
+.footer .btn-group-toggle a {
+	color: #666;
+}
+
+.footer .btn-group-toggle .active a {
+	color: #fff;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+	background-color: #545b62;
+}
+
 h1 {
 	font-variant: small-caps;
 }
