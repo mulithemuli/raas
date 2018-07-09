@@ -86,7 +86,10 @@
 		regexp.removeClass('is-invalid');
 		let regex = regexp.val() || settings.lastRegex;
 		try {
+			window.agent && window.agent.stop();
 			let randExp = new RandExp(regex);
+			window.agent && window.agent.play('Print');
+
 			texts.children().each((i, el) => {
 				$('input', el).val(randExp.gen());
 			});
@@ -96,6 +99,7 @@
 				$.post('/lastUsedRegex', { regex: regex });
 			}
 		} catch (e) {
+			window.agent && window.agent.play('GetAttention');
 			regexp.addClass('is-invalid');
 		}
 	}

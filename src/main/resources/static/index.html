@@ -17,6 +17,7 @@
 		<link rel="stylesheet" href="resources/fontawesome/css/solid.css">
 		<link rel="stylesheet" href="resources/fontawesome/css/fontawesome.css">
 		<link rel="stylesheet" href="resources/css/raas.css">
+		<link rel="stylesheet" type="text/css" href="https://gitcdn.xyz/repo/pi0/clippyjs/master/assets/clippy.css">
 	</head>
 	<body class="text-center">
 		<div class="scroll-container w-100 h-100">
@@ -121,5 +122,14 @@
 		<script src="/webjars/sockjs-client/sockjs.min.js"></script>
 		<script src="/webjars/stomp-websocket/stomp.min.js"></script>
 		<script src="resources/js/raas.js"></script>
+		<script src="https://unpkg.com/clippyjs@latest"></script>
+		<script type="text/javascript">
+			clippy.load('Links', function(agent){
+				// Do anything with the loaded agent
+				window.agent = agent;
+				window.agent.show();
+				window.agent.play('Wave');
+			});
+		</script>
 	</body>
 </html>
