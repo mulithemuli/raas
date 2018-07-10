@@ -16,8 +16,7 @@ body {
 	box-shadow: 0 0 5rem rgba(0, 0, 0, .5);
 	padding: 2rem;
 	z-index: 2;
-	height: 7rem;
-	max-height: 7rem;
+	min-height: 10rem;
 }
 
 .footer .container {
@@ -25,7 +24,7 @@ body {
 }
 
 .footer .footer-shadow {
-	box-shadow: 0px 0px 2rem 1.25rem rgba(0,0,0,1);
+	box-shadow: 0px 0px 2rem .25rem rgba(0,0,0,.75);
 	position: absolute;
 	bottom: -1px;
 	left: -50%;
@@ -77,7 +76,13 @@ h1 {
 }
 
 .texts {
-	margin-bottom: 7rem;
+	margin-bottom: 11rem;
+}
+
+.modal-toggler a,
+.modal-toggler a:hover {
+	color: #333;
+	text-decoration: none;
 }
 
 /* below rom https://getbootstrap.com/docs/4.1/examples/cover/ */

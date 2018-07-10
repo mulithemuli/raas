@@ -25,8 +25,8 @@
 	let regexList = $(document.getElementById('regex_list'));
 	let regexDialog = $(document.getElementById('regex_dialog'));
 	let shareRegexCheck = $(document.getElementById('share_regex'));
-	let lastUsedRegexDt = $('dt', document.getElementById('last_used_regex'));
-	let lastUsedRegexDd = $('dd', document.getElementById('last_used_regex'));
+	let lastUsedRegexPopupToggler = $('span.modal-toggler', document.getElementById('last_used_regex'));
+	let lastUsedRegexInput = $('input', document.getElementById('last_used_regex'));
 	let regexStatsList = $(document.getElementById('regex_stat_list'));
 	let regexStatsDialog = $(document.getElementById('regex_stats_dialog'));
 	let agentDropdown = $(document.getElementById('agent_dropdown'));
@@ -147,14 +147,13 @@
 	
 	let updateLastUsedRegex = (regexStats) => {
 		if (regexStats) {
-			lastUsedRegexDd.html(templates.lastUsedRegex(regexStats));
-			$('span', lastUsedRegexDt).text(regexStats.used);
-			$('a', lastUsedRegexDd).tooltip();
+			lastUsedRegexInput.val(regexStats.regex).attr({'data-original-title': 'Use ' + regexStats.regex}).tooltip();
+			$('span', lastUsedRegexPopupToggler).text(regexStats.used);
 			let ago = moment(regexStats.lastUsed).fromNow();
-			lastUsedRegexDt.attr({'data-original-title': ago, 'data-last-used': regexStats.lastUsed}).tooltip();
+			lastUsedRegexPopupToggler.attr({'data-original-title': ago, 'data-last-used': regexStats.lastUsed}).tooltip();
 		} else {
-			lastUsedRegexDd.html(' <em>none</em>');
-			$('span', lastUsedRegexDt).text(0);
+			lastUsedRegexDd.val('');
+			$('span', lastUsedRegexPopupToggler).text(0);
 		}
 	}
 	
@@ -234,8 +233,8 @@
 		settings.shareRegex = shareRegexCheck.prop('checked');
 	});
 	
-	lastUsedRegexDd.on('click', 'a', (e) => {
-		updateRegex($(e.currentTarget).data('regex'));
+	lastUsedRegexInput.on('click', (e) => {
+		updateRegex($(e.currentTarget).val());
 	});
 	
 	let dialogFromNowTimer;
@@ -276,11 +275,11 @@
 	
 	// timers
 	setInterval(() => {
-		if (!lastUsedRegexDt.attr('data-last-used')) {
+		if (!lastUsedRegexPopupToggler.attr('data-last-used')) {
 			return;
 		}
-		let ago = moment(lastUsedRegexDt.attr('data-last-used')).fromNow();
-		lastUsedRegexDt.attr('data-original-title', ago).tooltip();
+		let ago = moment(lastUsedRegexPopupToggler.attr('data-last-used')).fromNow();
+		lastUsedRegexPopupToggler.attr('data-original-title', ago).tooltip();
 	}, 100);
 	
 	// initializing
