@@ -65,14 +65,14 @@ public class RaasApplication {
 	}
 	
 	@RequestMapping(value = "lastUsedRegex", method = RequestMethod.POST)
-	public boolean updateLastUsedRegex(@RequestParam("regex") String regex) {
+	public RegexStats updateLastUsedRegex(@RequestParam("regex") String regex) {
 		RegexStats lastUsageStats = regexUsages.merge(regex, new RegexStats(regex), (o, n) -> o.use());
 		synchronized (LAST_USED_REGEX_LOCK) {
 			lastUsedRegex = lastUsageStats;
 		}
 		wsMessagingTemplate.convertAndSend("/topic/lastUsedRegex", lastUsageStats);
 		regexLoader.saveLastUsedRegex(lastUsageStats);
-		return true;
+		return lastUsageStats;
 	}
 	
 	@RequestMapping(value = "lastUsedRegex", method = RequestMethod.GET)

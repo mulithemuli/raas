@@ -129,7 +129,13 @@
 			updateRegex(regex);
 			settings.lastRegex = regex;
 			if (settings.shareRegex) {
-				$.post('/lastUsedRegex', { regex: regex });
+				$.post('/lastUsedRegex', { regex: regex }, (data) => {
+					// update last used regex for the client which initiated the call via page load
+					updateLastUsedRegex(data);
+				});
+			} else {
+				lastUsedRegexInput.val(regex);
+				$('span', lastUsedRegexPopupToggler).text('');
 			}
 		} catch (e) {
 			playAgents('GetAttention');
@@ -153,7 +159,7 @@
 			lastUsedRegexPopupToggler.attr({'data-original-title': ago, 'data-last-used': regexStats.lastUsed}).tooltip();
 		} else {
 			lastUsedRegexInput.val('');
-			$('span', lastUsedRegexPopupToggler).text(0);
+			$('span', lastUsedRegexPopupToggler).text('');
 		}
 	}
 	
@@ -293,15 +299,13 @@
 			});
 		});
 	}());
-	
+
 	updateRegex(settings.lastRegex);
 	initTexts();
 	generateTexts();
 	updateRegexList();
 	shareRegexCheck.prop('checked', settings.shareRegex).parent().toggleClass('active', settings.shareRegex);
 	shareRegexCheck.siblings('a').on('click', (e) => { e.stopPropagation() });
-	
-	$.get('lastUsedRegex', updateLastUsedRegex);
 	
 	$('[data-toggle="tooltip"]').tooltip();
 	$('[data-toggle="popover"]').popover();
