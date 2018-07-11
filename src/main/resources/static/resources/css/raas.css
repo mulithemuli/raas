@@ -9,9 +9,10 @@ body {
 }
 
 .footer {
-	position: absolute;
+	position: fixed;
 	bottom: 0;
 	left: 0;
+	right: 0;
 	background-color: #444;
 	box-shadow: 0 0 5rem rgba(0, 0, 0, .5);
 	padding: 2rem;

@@ -52,44 +52,44 @@
 					<div id="texts" class="texts"></div>
 				</main>
 				<div class="mastfoot mt-auto"></div>
+				<footer class="footer w-100">
+					<div class="container">
+						<div class="row mb-2">
+							<div class="col">
+								<div class="btn-group">
+									<button type="button" class="btn btn-secondary float-left" id="remove_row" data-toggle="tooltip" data-placement="top" title="Remove row"><i class="fas fa-minus"></i><span class="sr-only">Remove row</span></button>
+									<button type="button" class="btn btn-secondary float-left" id="add_row" data-toggle="tooltip" data-placement="top" title="Add row"><i class="fas fa-plus"></i><span class="sr-only">Add row</span></button>
+								</div>
+								<div class="btn-group">
+									<div class="btn-group-toggle" data-toggle="buttons">
+										<label class="btn btn-secondary">
+											<input type="checkbox" checked autocomplete="off" id="share_regex"><span class="d-none d-sm-inline-block">Share Regex</span><i class="fas fa-share-alt d-inline-block d-sm-none"></i>
+											<a href="#" data-toggle="popover" data-trigger="focus" data-placement="top" data-content="Regexes used can be seen by others such as for &quot;recently used&quot; or &quot;most used&quot;. Texts are still generated locally and can't be seen by others."><i class="fas fa-info-circle"></i></a>
+										</label>
+									</div>
+								</div>
+								<div class="btn-group">
+									<div class="dropdown dropup">
+										<button id="agent_group" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="d-none d-sm-inline-block">Agents</span><i class="fas fa-paperclip d-inline-block d-sm-none"></i></button>
+										<div class="dropdown-menu" aria-labelledby="agent_group" id="agent_dropdown"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col">
+								<div class="input-group" id="last_used_regex">
+									<div class="input-group-prepend">
+										<span class="input-group-text modal-toggler" data-toggle="tooltip" data-placement="top"><a href="#" data-toggle="modal" data-target="#regex_stats_dialog">Last used Regex <span class="badge badge-secondary"></span></a></span>
+									</div>
+									<input type="text" class="form-control" data-toggle="tooltip" data-placement="top" readonly>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="footer-shadow"></div>
+				</footer>
 			</div>
-			<footer class="footer w-100">
-				<div class="container">
-					<div class="row mb-2">
-						<div class="col">
-							<div class="btn-group">
-								<button type="button" class="btn btn-secondary float-left" id="remove_row" data-toggle="tooltip" data-placement="top" title="Remove row"><i class="fas fa-minus"></i><span class="sr-only">Remove row</span></button>
-								<button type="button" class="btn btn-secondary float-left" id="add_row" data-toggle="tooltip" data-placement="top" title="Add row"><i class="fas fa-plus"></i><span class="sr-only">Add row</span></button>
-							</div>
-							<div class="btn-group">
-								<div class="btn-group-toggle" data-toggle="buttons">
-									<label class="btn btn-secondary">
-										<input type="checkbox" checked autocomplete="off" id="share_regex"><span class="d-none d-sm-inline-block">Share Regex</span><i class="fas fa-share-alt d-inline-block d-sm-none"></i>
-										<a href="#" data-toggle="popover" data-trigger="focus" data-placement="top" data-content="Regexes used can be seen by others such as for &quot;recently used&quot; or &quot;most used&quot;. Texts are still generated locally and can't be seen by others."><i class="fas fa-info-circle"></i></a>
-									</label>
-								</div>
-							</div>
-							<div class="btn-group">
-								<div class="dropdown dropup">
-									<button id="agent_group" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="d-none d-sm-inline-block">Agents</span><i class="fas fa-paperclip d-inline-block d-sm-none"></i></button>
-									<div class="dropdown-menu" aria-labelledby="agent_group" id="agent_dropdown"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col">
-							<div class="input-group" id="last_used_regex">
-								<div class="input-group-prepend">
-									<span class="input-group-text modal-toggler" data-toggle="tooltip" data-placement="top"><a href="#" data-toggle="modal" data-target="#regex_stats_dialog">Last used Regex <span class="badge badge-secondary"></span></a></span>
-								</div>
-								<input type="text" class="form-control" data-toggle="tooltip" data-placement="top" readonly>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="footer-shadow"></div>
-			</footer>
 		</div>
 		<div class="modal fade" id="regex_dialog" tabindex="-1" role="dialog" aria-labelledby="regex_dialog_title" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered" role="document">
