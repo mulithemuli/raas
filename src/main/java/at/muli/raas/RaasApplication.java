@@ -5,6 +5,7 @@ import java.time.ZonedDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -53,7 +54,7 @@ public class RaasApplication {
 	
 	@RequestMapping(value = "lastUsedRegex", method = RequestMethod.GET)
 	public RegexStats getLastUsedRegex() {
-		return lastUsedRegex;
+		return Optional.ofNullable(lastUsedRegex).orElse(new RegexStats());
 	}
 	
 	@RequestMapping(value = "mostUsedRegex", method = RequestMethod.GET)
@@ -75,6 +76,10 @@ public class RaasApplication {
 		private Long used;
 		
 		private ZonedDateTime lastUsed;
+		
+		private RegexStats() {
+			this.used = 0L;
+		}
 		
 		public RegexStats(String regex) {
 			this.regex = regex;

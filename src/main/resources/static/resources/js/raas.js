@@ -146,7 +146,7 @@
 	}
 	
 	let updateLastUsedRegex = (regexStats) => {
-		if (regexStats) {
+		if (regexStats.regex) {
 			lastUsedRegexInput.val(regexStats.regex).attr({'data-original-title': 'Use ' + regexStats.regex}).tooltip();
 			$('span', lastUsedRegexPopupToggler).text(regexStats.used);
 			let ago = moment(regexStats.lastUsed).fromNow();
