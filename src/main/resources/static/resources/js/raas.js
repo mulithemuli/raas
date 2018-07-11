@@ -152,7 +152,7 @@
 			let ago = moment(regexStats.lastUsed).fromNow();
 			lastUsedRegexPopupToggler.attr({'data-original-title': ago, 'data-last-used': regexStats.lastUsed}).tooltip();
 		} else {
-			lastUsedRegexDd.val('');
+			lastUsedRegexInput.val('');
 			$('span', lastUsedRegexPopupToggler).text(0);
 		}
 	}
