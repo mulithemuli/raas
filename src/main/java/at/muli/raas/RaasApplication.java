@@ -1,13 +1,10 @@
 package at.muli.raas;
 
 import java.io.Serializable;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -16,19 +13,15 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
-import org.springframework.boot.autoconfigure.mongo.MongoProperties;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,8 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
-
-import com.mongodb.MongoClientOptions;
 
 import at.muli.raas.RegexStatsRepository.RegexStatsPO;
 import lombok.Getter;
@@ -95,32 +86,6 @@ public class RaasApplication {
 		regexUsages = regexLoader.loadRegexUsages();	
 	}
 	
-	@Bean
-	@ConditionalOnMongoUrl
-	public RegexLoader regexLoader() {
-		return new RegexLoaderDB();
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean(RegexLoader.class)
-	public RegexLoader regexLoaderNop() {
-		return new RegexLoader() {
-			@Override
-			public RegexStats loadLastUsedRegex() {
-				return null;
-			}
-			
-			@Override
-			public Map<String, RegexStats> loadRegexUsages() {
-				return new ConcurrentHashMap<>();
-			}
-			
-			@Override
-			public void saveLastUsedRegex(RegexStats regexStats) {
-			}
-		};
-	}
-	
 	public interface RegexLoader {
 		
 		RegexStats loadLastUsedRegex();
@@ -149,7 +114,7 @@ public class RaasApplication {
 		
 		public void saveLastUsedRegex(RegexStats regexStats) {
 			// when the save fails ... it fails.
-			new Thread(() -> regexStatsRepository.save(RegexStatsPO.fromRegexStats(regexStats))).start();
+			new Thread(() -> regexStatsRepository.save(regexStats.to())).start();
 		}
 	}
 	
@@ -182,6 +147,10 @@ public class RaasApplication {
 			return regexStats;
 		}
 		
+		public RegexStatsPO to() {
+			return new RegexStatsPO(regex, used, Date.from(lastUsed.toInstant()));
+		}
+		
 		public RegexStats use() {
 			this.used += 1;
 			this.lastUsed = ZonedDateTime.now();
@@ -191,26 +160,33 @@ public class RaasApplication {
 	
 	@ConditionalOnMongoUrl
 	@Configuration
-	public static class ConditionalMongoAutoConfiguration extends MongoAutoConfiguration {
+	@ImportAutoConfiguration({MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
+	public static class ConditionalMongoConfiguration {
 		
-		public ConditionalMongoAutoConfiguration(MongoProperties properties, ObjectProvider<MongoClientOptions> options, Environment environment) {
-			super(properties, options, environment);
-		}
-	}
-		
-	@ConditionalOnMongoUrl
-	@Configuration
-	public static class ConditionalMongoDataAutoConfiguration extends MongoDataAutoConfiguration {
-		
-		public ConditionalMongoDataAutoConfiguration(ApplicationContext applicationContext, MongoProperties properties) {
-			super(applicationContext, properties);
+		@Bean
+		public RegexLoader regexLoader() {
+			return new RegexLoaderDB();
 		}
 	}
 	
-	@Retention(RetentionPolicy.RUNTIME)
-	@Target({ ElementType.TYPE, ElementType.METHOD })
-	@ConditionalOnProperty({"spring.data.mongodb.host", "spring.data.mongodb.host"})
-	public static @interface ConditionalOnMongoUrl {
+	@Bean
+	@ConditionalOnMissingBean(RegexLoader.class)
+	public RegexLoader regexLoaderNop() {
+		return new RegexLoader() {
+			@Override
+			public RegexStats loadLastUsedRegex() {
+				return null;
+			}
+			
+			@Override
+			public Map<String, RegexStats> loadRegexUsages() {
+				return new ConcurrentHashMap<>();
+			}
+			
+			@Override
+			public void saveLastUsedRegex(RegexStats regexStats) {
+			}
+		};
 	}
 	
 	@Configuration
