@@ -1,0 +1,71 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: raas
+  namespace: aas-dev
+  labels:
+    app: raas
+    app.kubernetes.io/component: raas
+    app.kubernetes.io/instance: raas
+    app.kubernetes.io/name: raas
+    app.kubernetes.io/part-of: raas
+    app.openshift.io/runtime: java
+    app.openshift.io/runtime-version: openjdk-17-ubi8
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: raas
+  template:
+    metadata:
+      labels:
+        app: raas
+        deploymentconfig: raas
+    spec:
+      volumes:
+        - name: raas-application-config
+          configMap:
+            name: raas-application-config
+            defaultMode: 420
+      containers:
+        - name: raas
+          image: >-
+            image-registry.openshift-image-registry.svc:5000/aas-builds/raas
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+            - containerPort: 8443
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8081
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8081
+            initialDelaySeconds: 15
+            periodSeconds: 30
+            failureThreshold: 3
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: raas-application-config
+              mountPath: /opt/config
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600

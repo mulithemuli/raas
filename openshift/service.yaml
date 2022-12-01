@@ -1,0 +1,25 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: raas
+  namespace: aas-dev
+  labels:
+    app: raas
+    app.kubernetes.io/component: raas
+    app.kubernetes.io/instance: raas
+    app.kubernetes.io/name: raas
+    app.kubernetes.io/part-of: raas
+    app.openshift.io/runtime: java
+    app.openshift.io/runtime-version: openjdk-17-ubi8
+spec:
+  ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+    - name: 8443-tcp
+      protocol: TCP
+      port: 8443
+      targetPort: 8443
+  selector:
+    app: raas

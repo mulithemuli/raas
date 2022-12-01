@@ -1,0 +1,36 @@
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: raas
+  namespace: aas-builds
+  labels:
+    app: raas
+    app.kubernetes.io/component: raas
+    app.kubernetes.io/instance: raas
+    app.kubernetes.io/name: raas
+    app.kubernetes.io/part-of: raas
+    app.openshift.io/runtime: java
+    app.openshift.io/runtime-version: openjdk-17-ubi8
+spec:
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'raas:latest'
+  resources: {}
+  successfulBuildsHistoryLimit: 5
+  failedBuildsHistoryLimit: 5
+  source:
+    type: Binary
+    # removing the application.yaml to only load the correct configuration which should be provided externally!
+    dockerfile: |
+      FROM image-registry.openshift-image-registry.svc:5000/openshift/java:openjdk-17-ubi8
+      COPY *.jar /opt/app.jar
+      RUN cd /opt && jar -xf app.jar && rm -f app.jar
+      RUN rm -f /opt/BOOT-INF/classes/application.yaml
+      CMD java $JAVA_OPTS -classpath /opt org.springframework.boot.loader.JarLauncher
+  strategy:
+    type: Docker
+    dockerStrategy: {}
+  postCommit: {}
+  runPolicy: Serial

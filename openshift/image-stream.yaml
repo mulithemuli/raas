@@ -1,0 +1,16 @@
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  name: raas
+  namespace: aas-builds
+  labels:
+    app: raas
+    app.kubernetes.io/component: raas
+    app.kubernetes.io/instance: raas
+    app.kubernetes.io/name: raas
+    app.kubernetes.io/part-of: raas
+    app.openshift.io/runtime: java
+    app.openshift.io/runtime-version: openjdk-17-ubi8
+spec:
+  lookupPolicy:
+    local: false

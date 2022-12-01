@@ -1,0 +1,25 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: raas
+  namespace: aas-dev
+  labels:
+    app: raas
+    app.kubernetes.io/component: raas
+    app.kubernetes.io/instance: raas
+    app.kubernetes.io/name: raas
+    app.kubernetes.io/part-of: raas
+    app.openshift.io/runtime: java
+    app.openshift.io/runtime-version: openjdk-17-ubi8
+spec:
+  host: raas-aas-dev.apps.okd.fluff.chef.at
+  to:
+    kind: Service
+    name: raas
+    weight: 100
+  port:
+    targetPort: 8080-tcp
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None
