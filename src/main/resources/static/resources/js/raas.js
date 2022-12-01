@@ -1,5 +1,5 @@
 (function($) {
-	let agents = {
+	const agents = {
 		'Merlin': { visible: false, agent: null},
 		'Links': { visible: false, agent: null},
 		'Genius': { visible: false, agent: null},
@@ -12,7 +12,7 @@
 		'Rocky': { visible: false, agent: null}
 		};
 	
-	let defaults = {
+	const defaults = {
 			regex: '([a-zA-Z0-9_@:!]){4}([a-zA-Z]){2}([0-9]){2}',
 			numTexts: 5,
 			shareData: 'false',
@@ -20,22 +20,21 @@
 	}
 	
 	// fields / elements
-	let regexp = $(document.getElementById('regexp'));
-	let texts = $(document.getElementById('texts'));
-	let regexList = $(document.getElementById('regex_list'));
-	let regexDialog = $(document.getElementById('regex_dialog'));
-	let shareRegexCheck = $(document.getElementById('share_regex'));
-	let lastUsedRegexPopupToggler = $('span.modal-toggler', document.getElementById('last_used_regex'));
-	let lastUsedRegexInput = $('input', document.getElementById('last_used_regex'));
-	let regexStatsList = $(document.getElementById('regex_stat_list'));
-	let regexStatsDialog = $(document.getElementById('regex_stats_dialog'));
-	let agentDropdown = $(document.getElementById('agent_dropdown'));
+	const regexp = $(document.getElementById('regexp'));
+	const texts = $(document.getElementById('texts'));
+	const regexList = $(document.getElementById('regex_list'));
+	const regexDialog = $(document.getElementById('regex_dialog'));
+	const shareRegexCheck = $(document.getElementById('share_regex'));
+	const lastUsedRegexPopupToggler = $('span.modal-toggler', document.getElementById('last_used_regex'));
+	const lastUsedRegexInput = $('input', document.getElementById('last_used_regex'));
+	const regexStatsList = $(document.getElementById('regex_stat_list'));
+	const regexStatsDialog = $(document.getElementById('regex_stats_dialog'));
+	const agentDropdown = $(document.getElementById('agent_dropdown'));
 	
 	let stompClient;
-	let usedAgent;
-	
+
 	// templates
-	let templates = {
+	const templates = {
 			texts: _.template('\
 <div class="row">\
 	<div class="input-group col-md-12 mb-3">\
@@ -57,7 +56,7 @@
 			agent: _.template('<a class="dropdown-item" href="#"><%- name %></a>')
 	};
 	
-	let settings = {
+	const settings = {
 			get lastRegex() {
 				return localStorage.getItem('last_regex') || defaults.regex;
 			},
@@ -91,18 +90,18 @@
 	}
 	
 	// functions
-	let updateRegex = (ex) => {
+	const updateRegex = (ex) => {
 		regexp.val(ex);
 	}
 	
-	let initTexts = () => {
+	const initTexts = () => {
 		let count = settings.numTexts;
 		for (let i = 0; i < count; i++) {
 			texts.append(templates.texts());
 		}
 	}
 	
-	let playAgents = (animation) => {
+	const playAgents = (animation) => {
 		$.each(agents, (k, v) => {
 			if (v.agent && animation) {
 				v.agent.play(animation);
@@ -117,10 +116,10 @@
 			e.preventDefault();
 		}
 		regexp.removeClass('is-invalid');
-		let regex = regexp.val() || settings.lastRegex;
+		const regex = regexp.val() || settings.lastRegex;
 		try {
 			playAgents();
-			let randExp = new RandExp(regex);
+			const randExp = new RandExp(regex);
 			playAgents('Print');
 
 			texts.children().each((i, el) => {
@@ -143,19 +142,19 @@
 		}
 	}
 	
-	let updateRegexList = () => {
+	const updateRegexList = () => {
 		regexList.children().remove();
-		let stored = settings.storedRegex;
+		const stored = settings.storedRegex;
 		$.each(stored, (k) => {
 			regexList.append(templates.regexListItem({regex: k}));
 		});
 	}
 	
-	let updateLastUsedRegex = (regexStats) => {
+	const updateLastUsedRegex = regexStats => {
 		if (regexStats.regex) {
 			lastUsedRegexInput.val(regexStats.regex).attr({'data-original-title': 'Use ' + regexStats.regex}).tooltip();
 			$('span', lastUsedRegexPopupToggler).text(regexStats.used);
-			let ago = moment(regexStats.lastUsed).fromNow();
+			const ago = moment(regexStats.lastUsed).fromNow();
 			lastUsedRegexPopupToggler.attr({'data-original-title': ago, 'data-last-used': regexStats.lastUsed}).tooltip();
 		} else {
 			lastUsedRegexInput.val('');
@@ -179,9 +178,9 @@
 	
 	$(texts).on('click', 'button', (e) => {
 		e.preventDefault();
-		let dummy = document.createElement('input');
+		const dummy = document.createElement('input');
 		document.body.appendChild(dummy);
-		let button = $(e.currentTarget);
+		const button = $(e.currentTarget);
 		dummy.value = button.parent().siblings('input').val();
 		dummy.select();
 		document.execCommand('copy');
@@ -192,8 +191,8 @@
 	
 	$(document.getElementById('save_local')).on('click', (e) => {
 		e.preventDefault();
-		let stored = settings.storedRegex;
-		let currentValue = regexp.val();
+		const stored = settings.storedRegex;
+		const currentValue = regexp.val();
 		if (!currentValue) {
 			return;
 		}
@@ -210,8 +209,8 @@
 	
 	regexList.on('click', 'button', (e) => {
 		e.preventDefault();
-		let regexToDelete = $(e.currentTarget).parent().siblings('a').text();
-		let stored = settings.storedRegex;
+		const regexToDelete = $(e.currentTarget).parent().siblings('a').text();
+		const stored = settings.storedRegex;
 		delete stored[regexToDelete];
 		settings.storedRegex = stored;
 		updateRegexList();
@@ -219,7 +218,7 @@
 	
 	$(document.getElementById('add_row')).on('click', (e) => {
 		e.preventDefault();
-		let row = $(templates.texts());
+		const row = $(templates.texts());
 		texts.append(row);
 		$('[data-toggle="tooltip"]', row).tooltip();
 		$('input', row).val(new RandExp(settings.lastRegex).gen());
@@ -235,7 +234,7 @@
 		settings.numTexts = settings.numTexts - 1;
 	});
 	
-	shareRegexCheck.on('change', (e) => {
+	shareRegexCheck.on('change', () => {
 		settings.shareRegex = shareRegexCheck.prop('checked');
 	});
 	
@@ -314,8 +313,8 @@
 		generateTexts();
 	});
 	
-	let randPos = () => .2 + Math.random() * .6;
-	let toggleAgent = (name) => {
+	const randPos = () => .2 + Math.random() * .6;
+	const toggleAgent = (name) => {
 		if (agents[name].visible) {
 			agents[name].agent.stop();
 			agents[name].visible = false;
@@ -323,12 +322,12 @@
 			return;
 		}
 		if (!agents[name].agent) {
-			clippy.load(name, (agent) => {
+			clippy.load(name, agent => {
 				agents[name].agent = agent;
 				agents[name].agent.show();
 				agents[name].agent.moveTo($(document).width() / 2 * randPos(), $(document).height() * randPos());
 				agents[name].agent.play('Wave');
-			});
+			}, undefined, './resources/assets/agents/');
 		} else {
 			agents[name].agent.stop();
 			agents[name].agent.show();
@@ -340,10 +339,9 @@
 	$.each(settings.agents, (i, name) => {
 		toggleAgent(name);
 	});
-	
-	
+
 	$.each(agents, (k, v) => {
-		let agentDom = $(templates.agent({name: k})).toggleClass('active', v.visible).on('click', (e) => {
+		const agentDom = $(templates.agent({name: k})).toggleClass('active', v.visible).on('click', (e) => {
 			e.preventDefault();
 			e.stopPropagation();
 			toggleAgent(k);
@@ -353,7 +351,7 @@
 				visibleAgents.push(k);
 			} else {
 				let index = visibleAgents.indexOf(k);
-				if (index != -1) {
+				if (index !== -1) {
 					visibleAgents.splice(index, 1);
 				}
 			}
