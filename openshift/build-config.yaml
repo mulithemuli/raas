@@ -28,7 +28,7 @@ spec:
       COPY *.jar /opt/app.jar
       RUN cd /opt && jar -xf app.jar && rm -f app.jar
       RUN rm -f /opt/BOOT-INF/classes/application.yaml
-      CMD java $JAVA_OPTS -classpath /opt org.springframework.boot.loader.JarLauncher
+      CMD java $JAVA_OPTS -classpath /opt org.springframework.boot.loader.launch.JarLauncher
   strategy:
     type: Docker
     dockerStrategy: {}
