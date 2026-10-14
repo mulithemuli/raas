@@ -5,7 +5,7 @@ def jar_name = ''
 pipeline {
 
     agent {
-        label 'jdk-17'
+        label 'jdk-21'
     }
 
    options {

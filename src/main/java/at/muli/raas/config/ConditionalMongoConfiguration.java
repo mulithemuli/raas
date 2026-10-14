@@ -5,14 +5,14 @@ import at.muli.raas.RegexStatsRepository;
 import at.muli.raas.repository.RegexLoader;
 import at.muli.raas.repository.RegexLoaderDB;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
-import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
+import org.springframework.boot.data.mongodb.autoconfigure.DataMongoAutoConfiguration;
+import org.springframework.boot.mongodb.autoconfigure.MongoAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @ConditionalOnMongoUrl
 @Configuration
-@ImportAutoConfiguration({MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
+@ImportAutoConfiguration({MongoAutoConfiguration.class, DataMongoAutoConfiguration.class})
 public class ConditionalMongoConfiguration {
 
     @Bean

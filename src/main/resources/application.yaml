@@ -1,3 +1,15 @@
-#spring.boot.admin.client.url=http://localhost:12345
-#management.endpoints.web.exposure.include=*
-#spring.data.mongodb.host=localhost
+#spring:
+#  # Connection properties moved here:
+#  mongodb:
+#    uri: mongodb://localhost:27017/mydb
+#    database: mydb
+#  # Core Spring Data settings remain here:
+#  data:
+#    mongodb:
+#      auto-index-creation: true
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include:
+#          - *
